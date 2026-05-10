@@ -311,8 +311,13 @@ function isCreditCardNumber(ccn) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  if (num < 10) return num;
+  return getDigitalRoot(
+    String(num)
+      .split('')
+      .reduce((acc, item) => acc + +item, 0)
+  );
 }
 
 /**
@@ -336,8 +341,21 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const brObj = {
+    '>': '<',
+    '}': '{',
+    ']': '[',
+    ')': '(',
+  };
+  const brArr = Object.values(brObj);
+  const arr = [];
+  for (let i = 0; i <= str.length; i += 1) {
+    if (brArr.includes(str[i])) arr.push(str[i]);
+    else if (brObj[str[i]] === arr[arr.length - 1]) arr.pop();
+    else return false;
+  }
+  return !arr.length;
 }
 
 /**
@@ -360,8 +378,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 /**
@@ -376,8 +394,20 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const res = [];
+  const urls = pathes.map((item) => item.split('/'));
+  for (let i = 0; i < urls[0].length; i += 1) {
+    let count = 0;
+    const urlPart = urls[0][i];
+    for (let j = 0; j < pathes.length; j += 1) {
+      if (urls[j][i] !== urlPart) break;
+      count += 1;
+    }
+    if (count === pathes.length) res.push(urlPart);
+  }
+  if (res.length) res.push('');
+  return res.join('/');
 }
 
 /**
