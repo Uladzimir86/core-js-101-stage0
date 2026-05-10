@@ -221,8 +221,12 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const first = a > b ? b : a;
+  const second = a > b ? a : b;
+  const firstBr = isStartIncluded ? '[' : '(';
+  const secondBr = isEndIncluded ? ']' : ')';
+  return `${firstBr}${first}, ${second}${secondBr}`;
 }
 
 /**
@@ -237,8 +241,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 /**
@@ -253,8 +257,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return reverseString(String(num));
 }
 
 /**
@@ -277,8 +281,20 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const sum = String(ccn)
+    .slice(0, -1)
+    .split('')
+    .reverse()
+    .reduce((ccl, item, ind) => {
+      return (
+        ccl +
+        (ind % 2 === 1
+          ? +item
+          : +String(+item * 2)[0] + (+String(+item * 2)[1] || 0))
+      );
+    }, 0);
+  return (10 - (sum % 10)) % 10 === +String(ccn).slice(-1);
 }
 
 /**
